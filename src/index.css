@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: #f8f9fb;
+  color: #1a1d23;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #f1f4f8; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+::selection { background: rgba(99,102,241,0.15); }
+:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; border-radius: 4px; }
+
+textarea, input, select { font-family: inherit; }
+
+/* Tag pill */
+.tag-tech {
+  @apply text-[11px] font-medium px-2 py-0.5 rounded-full bg-tech-light text-tech-dark border border-tech-border;
+}
+.tag-gen {
+  @apply text-[11px] font-medium px-2 py-0.5 rounded-full bg-gen-light text-gen-dark border border-gen-border;
+}
+
+/* Difficulty badges */
+.badge-beginner     { @apply text-[10px] font-semibold px-2 py-0.5 rounded-full bg-success-light text-success border border-success-border; }
+.badge-intermediate { @apply text-[10px] font-semibold px-2 py-0.5 rounded-full bg-warning-light text-warning border border-warning-border; }
+.badge-advanced     { @apply text-[10px] font-semibold px-2 py-0.5 rounded-full bg-danger-light text-danger border border-danger-border; }
+
+/* Content block type labels */
+.block-type {
+  @apply text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded bg-surface-muted text-ink-muted;
+}
