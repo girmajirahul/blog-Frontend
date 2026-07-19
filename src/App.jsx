@@ -16,6 +16,7 @@ import GeneralBlog from "./pages/general/GeneralblogDetail";
 import TechBlogDetail from "./pages/tech/TechBlogDetail";
 import MyProfile from "./pages/MyProfile";
 import MyPosts from "./pages/MyPosts";
+import TechBlogList2 from "./pages/TechBlogList2";
 
 function Layout({ children, onToast }) {
   return (
@@ -51,6 +52,7 @@ export default function App() {
 
         <Route path="/profile" element={<MyProfile />} />
         <Route path="/my-posts" element={<MyPosts />} />
+        <Route path="/general" element={<TechBlogList2/>} />
 
         {/* Dashboard */}
         <Route path="/admin" element={w(Dashboard)} />
@@ -62,7 +64,6 @@ export default function App() {
 
         {/* General Blog */}
         <Route path="/admin/general" element={w(GeneralBlogList)} />
-        <Route path="/general" element={w(GeneralBlogList)} />
         <Route path="/admin/general/create" element={w(GeneralBlogForm)} />
         <Route path="/admin/general/edit/:id" element={w(GeneralBlogForm)} />
 

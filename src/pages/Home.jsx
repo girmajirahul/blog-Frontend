@@ -101,6 +101,7 @@ export default function Home() {
   const [subDone, setSubDone] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [POSTS, setPOSTS] = useState([]);
+  const [Blogs,setBlogs]=useState([])
   const navigate = useNavigate();
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -109,7 +110,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    techApi.getAll()
+    techApi.getAll(1,6)
       .then((r) => {
         const d = r.data.data;
 
@@ -123,14 +124,21 @@ export default function Home() {
     // .finally(() => setLoading(false));
   }, []);
 
-  // console.log(POSTS)
-  // function handleSubscribe(e) {
-  //   e.preventDefault();
-  //   if (!email) return;
-  //   setSubDone(true);
-  //   setEmail("");
-  //   setTimeout(() => setSubDone(false), 4000);
-  // }
+  useEffect(() => {
+      genApi.getAll(1,6)
+        .then((r) => {
+          const d = r.data.data;
+  
+          setBlogs(d.data);
+          setTotalPages(d.totalPages);
+          setTotalBlogs(d.totalBlogs);
+          setHasNextPage(d.hasNextPage);
+          setHasPreviousPage(d.hasPreviousPage);
+        })
+        .catch(() => { console.log("Using demo data.", "info"); })
+        // .finally(() => setLoading(false));
+    }, []);
+    
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -397,12 +405,18 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {POSTS.map((post, i) => (
-              <PostCard key={post._id} post={post} featured={i === 0} />
+              <PostCard key={post._id} post={post} featured={"tech"} />
+            ))}
+          </div>
+          
+          <div className=" mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Blogs.map((post, i) => (
+              <PostCard key={post._id} post={post} featured={"general"} />
             ))}
           </div>
 
           <div className="text-center mt-10 sm:hidden">
-            <button className="px-6 py-3 rounded-xl border-2 border-violet-200 text-violet-600 text-sm font-bold hover:bg-violet-50 transition-colors">
+            <button className="px-6 py-3 rounded-xl border-2 border-violet-200 text-violet-600 text-sm font-bold hover:bg-violet-50 transition-colors" onClick={() => navigate('/general')}>
               View all posts →
             </button>
           </div>
@@ -484,7 +498,7 @@ function PostCard({ post, featured }) {
           {post.tags.map(t => (
             <span key={t} className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${c.tag}`}>{t}</span>
           ))}
-          {featured && <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200">⭐ Featured</span>}
+          {featured && <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-700 border border-amber-200">{featured} </span>}
         </div>
 
         {/* Title */}
@@ -504,7 +518,11 @@ function PostCard({ post, featured }) {
               <p className="text-[10px] text-gray-400">{post.date}</p>
             </div>
           </div>
-          <button className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border transition-all ${c.tag} hover:scale-105`} onClick={()=>navigate(`/techblog/${post.slug}`)}>
+          <button className={`inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-xl border transition-all ${c.tag} hover:scale-105`}
+           onClick={()=>{
+              const url=featured==='tech'? `/techblog/${post.slug}`:`/general/view/${post.slug}`
+              navigate(url)
+          }}>
             Read more
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-3 h-3"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
