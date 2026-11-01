@@ -17,6 +17,7 @@ import TechBlogDetail from "./pages/tech/TechBlogDetail";
 import MyProfile from "./pages/MyProfile";
 import MyPosts from "./pages/MyPosts";
 import TechBlogList2 from "./pages/TechBlogList2";
+import AuthCallback from "./pages/AuthCallback";
 
 function Layout({ children, onToast }) {
   return (
@@ -49,6 +50,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/home" replace />} />
         <Route path="/general/view/:slug" element={<GeneralBlog />} />
         <Route path="/techblog/:slug" element={<TechBlogDetail />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
 
         <Route path="/profile" element={<MyProfile />} />
         <Route path="/my-posts" element={<MyPosts />} />
