@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer({ onLogin, onSignup }) {
   return (
@@ -21,7 +22,7 @@ export default function Footer({ onLogin, onSignup }) {
               Spread your thoughts! We believe in your knowledge. Do you?
             </p>
             {/* Social icons */}
-            
+
           </div>
 
           {/* Quick Links */}
@@ -90,10 +91,20 @@ export default function Footer({ onLogin, onSignup }) {
       {/* Bottom bar */}
       <div className="border-t border-gray-200 py-5 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-gray-400">© 2025 Blogin. All rights reserved.</p>
+          <p className="text-xs text-gray-400">© {new Date().getFullYear()} Blogin. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            {["Privacy Policy", "Terms", "Cookies"].map(item => (
-              <a key={item} href="#" className="text-xs text-gray-400 hover:text-gray-600 transition-colors">{item}</a>
+            {[
+              { label: "Privacy Policy", path: "/privacy-policy" },
+              { label: "Terms", path: "/terms-and-conditions" },
+              { label: "Cookies", path: "/cookie-policy" },
+            ].map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className="text-xs text-gray-400 hover:text-purple-600 transition-colors"
+              >
+                {item.label}
+              </Link>
             ))}
           </div>
         </div>

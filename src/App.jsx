@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import Sidebar, { MobileNav } from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 import { ToastContainer } from "./components/Toast";
@@ -18,17 +18,26 @@ import MyProfile from "./pages/MyProfile";
 import MyPosts from "./pages/MyPosts";
 import TechBlogList2 from "./pages/TechBlogList2";
 import AuthCallback from "./pages/AuthCallback";
+import BlogList from "./pages/CommonBlogList";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsAndConditions from "./pages/legal/TermsAndCondition";
+import CookiePolicy from "./pages/legal/CookieAndPolicy";
+import ProtectedRoute from "./components/auth/ProtectedRoutes";
+import Unauthorized from "./pages/Unauthorized";
 
 function Layout({ children, onToast }) {
   return (
     <div className="flex h-screen bg-surface-base overflow-hidden">
       <Sidebar />
+
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         <Topbar />
+
         <main className="flex-1 overflow-y-auto">
-          {React.cloneElement(children, { onToast })}
+         <Outlet context={{onToast}} />
         </main>
       </div>
+
       <MobileNav />
     </div>
   );
@@ -36,12 +45,6 @@ function Layout({ children, onToast }) {
 
 export default function App() {
   const { toasts, add, remove } = useToast();
-
-  const w = (El) => (
-    <Layout onToast={add}>
-      <El />
-    </Layout>
-  );
 
   return (
     <BrowserRouter>
@@ -52,22 +55,41 @@ export default function App() {
         <Route path="/techblog/:slug" element={<TechBlogDetail />} />
         <Route path="/auth/callback" element={<AuthCallback />} />
 
-        <Route path="/profile" element={<MyProfile />} />
+
         <Route path="/my-posts" element={<MyPosts />} />
-        <Route path="/general" element={<TechBlogList2/>} />
+        <Route path="/general" element={<TechBlogList2 />} />
+        <Route path="/blogs" element={<BlogList />} />
+        <Route path="/general/create" element={<GeneralBlogForm />} />
 
-        {/* Dashboard */}
-        <Route path="/admin" element={w(Dashboard)} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+        <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<MyProfile />} />
+        </Route>
 
-        {/* Tech Blog */}
-        <Route path="/admin/tech" element={w(TechBlogList)} />
-        <Route path="/admin/tech/create" element={w(TechBlogForm)} />
-        <Route path="/admin/tech/edit/:id" element={w(TechBlogForm)} />
 
-        {/* General Blog */}
-        <Route path="/admin/general" element={w(GeneralBlogList)} />
-        <Route path="/admin/general/create" element={w(GeneralBlogForm)} />
-        <Route path="/admin/general/edit/:id" element={w(GeneralBlogForm)} />
+        {/*Admin  Dashboard */}
+        <Route element={<ProtectedRoute adminOnly />}>
+            <Route element={<Layout />}>
+            
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/my-posts" element={<MyPosts />} />
+          <Route path="/admin/tech" element={<TechBlogList />} />
+          <Route path="/admin/tech/create" element={<TechBlogForm />} />
+          <Route path="/admin/tech/edit/:id" element={<TechBlogForm />} />
+
+          {/* General Blog */}
+          <Route path="/admin/general" element={< GeneralBlogList/>} />
+          <Route path="/admin/general/create" element={<GeneralBlogForm />} />
+          <Route path="/admin/general/edit/:id" element={<GeneralBlogForm />} /> 
+            </Route> 
+
+        </Route>
+
+
+
 
         {/* 404 */}
         <Route path="*" element={

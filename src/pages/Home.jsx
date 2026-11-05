@@ -5,78 +5,8 @@ import SignupModal from "../components/Home/SignupModal";
 import Footer from "../components/Home/Footer";
 import { useNavigate } from "react-router-dom";
 import http, { genApi, techApi } from "../api";
+import { useAuth } from "../context/AuthContext";
 
-
-
-/* ── Mock blog posts ── */
-// const POSTS =  [
-//   {
-//     id: 1,
-//     title: "Building Scalable REST APIs with Node.js",
-//     excerpt: "Learn how to design and build production-ready REST APIs using Express, MongoDB, and best practices that scale to millions of users.",
-//     author: "Arjun Sharma",
-//     avatar: "A",
-//     date: "Jan 15, 2025",
-//     readTime: "8 min read",
-//     tags: ["Node.js", "API"],
-//     color: "violet",
-//   },
-//   {
-//     id: 2,
-//     title: "React 19 — Everything You Need to Know",
-//     excerpt: "Concurrent rendering, new hooks, and performance improvements. A complete breakdown of what changed and how to migrate your existing projects.",
-//     author: "Ambika Girmaji",
-//     avatar: "A",
-//     date: "Jan 12, 2025",
-//     readTime: "12 min read",
-//     tags: ["React", "JavaScript"],
-//     color: "pink",
-//   },
-//   {
-//     id: 3,
-//     title: "My Journey from Junior to Senior Dev in 3 Years",
-//     excerpt: "The mindset shifts, the mistakes, the wins. An honest reflection on what it actually takes to level up as a software developer.",
-//     author: "Rohit Verma",
-//     avatar: "R",
-//     date: "Jan 10, 2025",
-//     readTime: "6 min read",
-//     tags: ["Career", "Personal"],
-//     color: "cyan",
-//   },
-//   {
-//     id: 4,
-//     title: "Docker + Node.js: The Complete Guide",
-//     excerpt: "Containerize your Node.js applications like a pro. From Dockerfile to docker-compose, everything covered with real examples.",
-//     author: "Sneha Patel",
-//     avatar: "S",
-//     date: "Jan 8, 2025",
-//     readTime: "10 min read",
-//     tags: ["Docker", "DevOps"],
-//     color: "violet",
-//   },
-//   {
-//     id: 5,
-//     title: "Why I Quit My 9-5 to Build in Public",
-//     excerpt: "Six months ago I left a comfortable job to build my own products. Here's what happened — the good, the bad, and the terrifying.",
-//     author: "Vikram Das",
-//     avatar: "V",
-//     date: "Jan 5, 2025",
-//     readTime: "5 min read",
-//     tags: ["Startup", "Life"],
-//     color: "pink",
-//   },
-//   {
-//     id: 6,
-//     title: "Tailwind CSS Tips That Will Change Your Workflow",
-//     excerpt: "Advanced patterns, custom utilities, and tricks that experienced Tailwind developers use every day but rarely talk about.",
-//     author: "Ananya Singh",
-//     avatar: "A",
-//     date: "Jan 2, 2025",
-//     readTime: "7 min read",
-//     tags: ["CSS", "Frontend"],
-//     color: "cyan",
-//   },
-// ];
 
 const STATS = [
   { value: "50K+", label: "Readers Monthly" },
@@ -103,6 +33,7 @@ export default function Home() {
   const [POSTS, setPOSTS] = useState([]);
   const [Blogs,setBlogs]=useState([])
   const navigate = useNavigate();
+
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn);
@@ -221,7 +152,7 @@ export default function Home() {
 
               {/* CTA buttons */}
               <div className="flex flex-wrap gap-4">
-                <button onClick={() => naviagte('/admin')}
+                <button onClick={() => navigate('/admin')}
                   className="group inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-pink-500 text-white font-bold text-base shadow-[0_4px_20px_rgba(124,58,237,0.35)] hover:shadow-[0_6px_30px_rgba(124,58,237,0.5)] hover:scale-[1.03] transition-all duration-200">
                   Start Writing Free
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform">
@@ -397,7 +328,7 @@ export default function Home() {
               <p className="text-violet-600 font-bold text-sm uppercase tracking-widest mb-2">Latest Content</p>
               <h2 className="text-3xl sm:text-4xl font-black text-gray-900">Recent Posts</h2>
             </div>
-            <button className="hidden sm:inline-flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 font-semibold transition-colors" onClick={() => navigate('/general')}>
+            <button className="hidden sm:inline-flex items-center gap-2 text-sm text-violet-600 hover:text-violet-700 font-semibold transition-colors" onClick={() => navigate('/blogs')}>
               View all posts
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4"><path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
