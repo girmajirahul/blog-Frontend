@@ -35,10 +35,20 @@ authApi.interceptors.request.use((config) => {
 //   }
 // );
 
+export const setAuthToken = (token) => {
+  if (token) {
+    authApi.defaults.headers.common.Authorization = `Bearer ${token}`;
+  } else {
+    delete authApi.defaults.headers.common.Authorization;
+  }
+};
+
+
 export const authService = {
   register: (data) => authApi.post("/api/auth/register", data),
   login:    (data) => authApi.post("/api/auth/login", data),
   logout:   ()     => authApi.post("/api/auth/logout"),
+  refresh: () => authApi.post("/api/auth/refresh"),
   getMe:    ()     => authApi.get("/api/auth/me"),
 };
 

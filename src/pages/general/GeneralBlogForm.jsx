@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { genApi } from "../../api/index";
+import { blogApi, genApi } from "../../api/index";
 import { Input, Textarea } from "../../components/Field";
 import Button from "../../components/Button";
 import PageWrapper from "../../components/PageWrapper";
 import { generateSlug, todayString, estimateReadingTimeFromStrings, parseTags, debounce } from "../../utils/helpers";
+import { UploadCloud } from "lucide-react/dist/cjs/lucide-react";
+import ImportBlogModal from "../../components/ImportModalBlog";
 
 const BLANK = {
   title: "", slug: "", excerpt: "", date: "", readingTime: "",
@@ -24,6 +26,19 @@ export default function GeneralBlogForm({ onToast }) {
   const [fetching, setFetching] = useState(isEdit);
   const [slugLocked, setSlugLocked] = useState(false);
   const [preview, setPreview] = useState(false);
+  const [isImportOpen, setIsImportOpen] = useState(false);
+
+  const handleImportBlog = async (formData) => {
+    const response = await blogApi.importBlog(formData);
+
+    if (response.data.success) {
+      // Refresh your blog list here if needed
+      return response.data;
+    }
+
+    throw new Error(response.data.message || "Import failed.");
+  };
+
 
   /* fetch for edit */
   useEffect(() => {
@@ -130,6 +145,16 @@ export default function GeneralBlogForm({ onToast }) {
           <Button variant="ghost" size="sm" onClick={() => setPreview(p => !p)}>
             {preview ? "← Edit" : "Preview"}
           </Button>
+
+          <button
+            onClick={() => setIsImportOpen(true)}
+            className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-pink-500 px-5 py-3 text-sm font-bold text-white shadow-lg transition hover:scale-[1.02]"
+          >
+            <UploadCloud size={18} />
+            Import Blog
+          </button>
+
+
         </div>
 
         {preview ? <Preview form={form} paragraphs={paragraphs} /> : (
@@ -236,6 +261,11 @@ export default function GeneralBlogForm({ onToast }) {
             </div>
           </form>
         )}
+        <ImportBlogModal
+          isOpen={isImportOpen}
+          onClose={() => setIsImportOpen(false)}
+          onImport={handleImportBlog}
+        />
       </div>
     </PageWrapper>
   );

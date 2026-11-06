@@ -14,6 +14,19 @@ const http = axios.create({
   timeout: 15000,
 });
 
+http.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 http.interceptors.response.use(
   (res) => res,
   (err) => {
@@ -43,6 +56,21 @@ export const genApi = {
   create:    (data)     => http.post("/api/blogs", data),
   update:    (id, data) => http.put(`/api/blogs/${id}`, data),
   delete:    (id)       => http.delete(`/api/blogs/${id}`),
+};
+
+
+export const blogApi = {
+  getCommonBlogs: (page = 1, limit = 10, type = "all") =>
+    http.get(
+      `/api/blogs/commonblogs?page=${page}&limit=${limit}&type=${type}`
+    ),
+
+   importBlog: (formData) =>
+    http.post("/api/blogs/import", formData,{
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }),  
 };
 
 export default http;
