@@ -42,6 +42,7 @@ http.interceptors.response.use(
 /* ── /api/tech  (TechBlog) ─────────────────────────────────────── */
 export const techApi = {
   getAll:    (page = 1, limit = 5)         => http.get(`/api/tech?page=${page}&limit=${limit}`),
+  getAllByUser:  (id)         => http.get(`/api/tech/users/${id}`),
   getBySlug: (slug)     => http.get(`/api/tech/${slug}`),
   create:    (data)     => http.post("/api/tech", data),
   update:    (id, data) => http.put(`/api/tech/${id}`, data),

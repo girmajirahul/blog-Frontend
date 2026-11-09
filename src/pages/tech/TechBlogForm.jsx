@@ -6,6 +6,7 @@ import { Input, Textarea, Select } from "../../components/Field";
 import Button from "../../components/Button";
 import PageWrapper from "../../components/PageWrapper";
 import { generateSlug, todayString, estimateReadingTime, parseTags, debounce } from "../../utils/helpers";
+import { useAuth } from "../../context/AuthContext";
 
 /* ── Content block definitions (matching TechBlog schema) ─────── */
 const BLOCK_TYPES = [
@@ -46,7 +47,8 @@ export default function TechBlogForm({ onToast }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
-
+  const {user}=useAuth();
+  const url=user.role === "admin" ? "/admin/tech" :"/my-posts"
   const [form, setForm] = useState(BLANK_FORM);
   const [blocks, setBlocks] = useState([]);
   const [errors, setErrors] = useState({});
@@ -165,7 +167,7 @@ export default function TechBlogForm({ onToast }) {
     try {
       if (isEdit) { await techApi.update(id, payload); onToast?.("Tech blog updated!", "success"); }
       else { await techApi.create(payload); onToast?.("Tech blog published!", "success"); }
-      navigate("/admin/tech");
+      navigate(url);
     } catch (err) {
       onToast?.(err.userMessage ?? "Failed to save.", "error");
     } finally { setLoading(false); }
