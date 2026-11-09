@@ -34,7 +34,7 @@ function Layout({ children, onToast }) {
         <Topbar />
 
         <main className="flex-1 overflow-y-auto">
-         <Outlet context={{onToast}} />
+          <Outlet context={{ onToast }} />
         </main>
       </div>
 
@@ -56,7 +56,7 @@ export default function App() {
         <Route path="/auth/callback" element={<AuthCallback />} />
 
 
-        <Route path="/my-posts" element={<MyPosts />} />
+        {/* <Route path="/my-posts" element={<MyPosts />} /> */}
         <Route path="/general" element={<TechBlogList2 />} />
         <Route path="/blogs" element={<BlogList />} />
         <Route path="/general/create" element={<GeneralBlogForm />} />
@@ -67,24 +67,28 @@ export default function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<MyProfile />} />
+          <Route path="/my-posts" element={<MyPosts />} />
+          <Route path="/general/create" element={<GeneralBlogForm />} />
+          <Route path="/general/edit/:id" element={<GeneralBlogForm />} />
+          <Route path="/tech/create" element={<TechBlogForm />} />
+          <Route path="/tech/edit/:id" element={<TechBlogForm />} />
         </Route>
 
 
         {/*Admin  Dashboard */}
         <Route element={<ProtectedRoute adminOnly />}>
-            <Route element={<Layout />}>
-            
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/my-posts" element={<MyPosts />} />
-          <Route path="/admin/tech" element={<TechBlogList />} />
-          <Route path="/admin/tech/create" element={<TechBlogForm />} />
-          <Route path="/admin/tech/edit/:id" element={<TechBlogForm />} />
+          <Route element={<Layout />}>
+            <Route path="/admin" element={<Dashboard />} />
+            <Route path="/my-posts" element={<MyPosts />} />
+            <Route path="/admin/tech" element={<TechBlogList />} />
+            <Route path="/admin/tech/create" element={<TechBlogForm />} />
+            <Route path="/admin/tech/edit/:id" element={<TechBlogForm />} />
 
-          {/* General Blog */}
-          <Route path="/admin/general" element={< GeneralBlogList/>} />
-          <Route path="/admin/general/create" element={<GeneralBlogForm />} />
-          <Route path="/admin/general/edit/:id" element={<GeneralBlogForm />} /> 
-            </Route> 
+            {/* General Blog */}
+            <Route path="/admin/general" element={< GeneralBlogList />} />
+            <Route path="/admin/general/create" element={<GeneralBlogForm />} />
+            <Route path="/admin/general/edit/:id" element={<GeneralBlogForm />} />
+          </Route>
 
         </Route>
 

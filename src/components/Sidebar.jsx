@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 
 const NAV = [
   {
@@ -35,7 +36,8 @@ const NAV = [
 export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
-
+  const {user}=useAuth()
+  
   function isActive(item) {
     return item.exact ? location.pathname === item.path : location.pathname.startsWith(item.path);
   }
@@ -118,7 +120,7 @@ export default function Sidebar() {
             <div className="w-7 h-7 rounded-full bg-gradient-to-br from-tech to-gen flex items-center justify-center text-xs font-bold text-white flex-shrink-0">A</div>
             <div className="min-w-0">
               <p className="text-xs font-semibold text-ink truncate">Admin</p>
-              <p className="text-[10px] text-ink-muted truncate">admin@blog.dev</p>
+              <p className="text-[10px] text-ink-muted truncate">{user.email}</p>
             </div>
           </div>
         )}

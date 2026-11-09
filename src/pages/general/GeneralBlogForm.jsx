@@ -8,6 +8,7 @@ import PageWrapper from "../../components/PageWrapper";
 import { generateSlug, todayString, estimateReadingTimeFromStrings, parseTags, debounce } from "../../utils/helpers";
 import { UploadCloud } from "lucide-react/dist/cjs/lucide-react";
 import ImportBlogModal from "../../components/ImportModalBlog";
+import { useAuth } from "../../context/AuthContext";
 
 const BLANK = {
   title: "", slug: "", excerpt: "", date: "", readingTime: "",
@@ -18,7 +19,8 @@ export default function GeneralBlogForm({ onToast }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const isEdit = Boolean(id);
-
+  const {user}=useAuth();
+  const url=user.role==="admin" ? "/admin/general" :"/my-posts"
   const [form, setForm] = useState(BLANK);
   const [paragraphs, setParagraphs] = useState([""]);   // content: [String]
   const [errors, setErrors] = useState({});
@@ -120,7 +122,7 @@ export default function GeneralBlogForm({ onToast }) {
     try {
       if (isEdit) { await genApi.update(id, payload); onToast?.("Blog updated!", "success"); }
       else { await genApi.create(payload); onToast?.("Blog published!", "success"); }
-      navigate("/admin/general");
+      navigate(url);
     } catch (err) {
       onToast?.(err.userMessage ?? "Failed to save.", "error");
     } finally { setLoading(false); }
