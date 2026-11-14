@@ -24,6 +24,7 @@ import TermsAndConditions from "./pages/legal/TermsAndCondition";
 import CookiePolicy from "./pages/legal/CookieAndPolicy";
 import ProtectedRoute from "./components/auth/ProtectedRoutes";
 import Unauthorized from "./pages/Unauthorized";
+import ChatPage from "./pages/chatPage";
 
 function Layout({ children, onToast }) {
   return (
@@ -67,6 +68,7 @@ export default function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<MyProfile />} />
+          <Route path="/chat" element={<ChatPage />} />
           <Route path="/my-posts" element={<MyPosts />} />
           <Route path="/general/create" element={<GeneralBlogForm />} />
           <Route path="/general/edit/:id" element={<GeneralBlogForm />} />

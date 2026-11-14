@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { authService } from "../../api/auth";
+import { MessageCircle } from "lucide-react/dist/cjs/lucide-react";
 
 export default function Navbar({ scrolled, onLogin, onSignup }) {
   const [menuOpen,     setMenuOpen]     = useState(false);
@@ -119,6 +120,9 @@ export default function Navbar({ scrolled, onLogin, onSignup }) {
                       <DropdownItem icon={<PostsIcon />} label="My Posts"
                         onClick={() => { navigate("/my-posts"); setDropdownOpen(false); }} />
 
+                      <DropdownItem icon={<MessageCircle />} label="Chats"
+                        onClick={() => { navigate("/chat"); setDropdownOpen(false); }} />
+
                       {user.role === "admin" && (
                         <DropdownItem icon={<DashboardIcon />} label="Admin Dashboard"
                           onClick={() => { navigate("/admin"); setDropdownOpen(false); }} accent />
@@ -177,6 +181,7 @@ export default function Navbar({ scrolled, onLogin, onSignup }) {
 
                 <MobileMenuItem icon={<ProfileIcon />}   label="My Profile"       onClick={() => { navigate("/profile");   setMenuOpen(false); }} />
                 <MobileMenuItem icon={<PostsIcon />}     label="My Posts"         onClick={() => { navigate("/my-posts"); setMenuOpen(false); }} />
+                <MobileMenuItem icon={<MessageCircle />}     label="Chats"         onClick={() => { navigate("/chat"); setMenuOpen(false); }} />
                 {user.role === "admin" && (
                   <MobileMenuItem icon={<DashboardIcon />} label="Admin Dashboard" onClick={() => { navigate("/admin");     setMenuOpen(false); }} accent />
                 )}
